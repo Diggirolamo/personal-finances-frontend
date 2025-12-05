@@ -1,0 +1,51 @@
+<div class="header">
+  <div>
+    <h2>Portafoglio</h2>
+    <p class="subtitle">Sintesi investimenti</p>
+  </div>
+  <a routerLink="/investimenti/movimenti" class="btn">Vai ai movimenti</a>
+</div>
+
+<div *ngIf="loading" class="state">Caricamento...</div>
+<div *ngIf="error" class="state error">{{ error }}</div>
+
+<div *ngIf="!loading && !error" class="grid">
+  <div class="card metric">
+    <div class="label">Investimenti</div>
+    <div class="value">{{ totalInvestments }}</div>
+  </div>
+  <div class="card metric">
+    <div class="label">Valore stimato</div>
+    <div class="value">{{ estimatedValue | number: '1.2-2' }}</div>
+  </div>
+</div>
+
+<div *ngIf="!loading && !error">
+  <div class="card table-card" *ngIf="investments.length; else empty">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Ticker</th>
+          <th>Nome</th>
+          <th>Asset class</th>
+          <th>Quantità</th>
+          <th>Prezzo medio</th>
+          <th>Valore</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let inv of investments">
+          <td>{{ inv.ticker }}</td>
+          <td>{{ inv.name }}</td>
+          <td>{{ inv.assetClass?.name || inv.assetClass?.code }}</td>
+          <td>{{ inv.totalQuantity ?? 0 }}</td>
+          <td>{{ inv.averagePrice ?? 0 | number: '1.2-2' }}</td>
+          <td>{{ (inv.totalQuantity ?? 0) * (inv.averagePrice ?? 0) | number: '1.2-2' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <ng-template #empty>
+    <div class="state">Nessun investimento trovato.</div>
+  </ng-template>
+</div>

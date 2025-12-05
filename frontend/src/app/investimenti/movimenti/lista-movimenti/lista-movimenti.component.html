@@ -1,0 +1,54 @@
+<div class="header">
+  <div>
+    <h2>Movimenti</h2>
+    <p class="subtitle">Seleziona un investimento per vedere i movimenti</p>
+  </div>
+  <a
+    *ngIf="selectedInvestmentId"
+    class="btn primary"
+    [routerLink]="['/investimenti/movimenti/nuovo']"
+    [queryParams]="{ investmentId: selectedInvestmentId }"
+    >+ Nuovo movimento</a
+  >
+</div>
+
+<div *ngIf="loadingInvestments" class="state">Caricamento investimenti...</div>
+<div *ngIf="error" class="state error">{{ error }}</div>
+
+<div *ngIf="!loadingInvestments && investments.length" class="selector">
+  <label>
+    Investimento
+    <select [(ngModel)]="selectedInvestmentId" (ngModelChange)="loadMovements()">
+      <option *ngFor="let inv of investments" [value]="inv.id">{{ inv.ticker }} - {{ inv.name }}</option>
+    </select>
+  </label>
+</div>
+
+<div *ngIf="loadingMovements" class="state">Caricamento movimenti...</div>
+
+<table *ngIf="!loadingMovements && movements.length" class="table">
+  <thead>
+    <tr>
+      <th>Data</th>
+      <th>Tipo</th>
+      <th>Quantità</th>
+      <th>Prezzo</th>
+      <th>Totale</th>
+      <th>Note</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let mov of movements">
+      <td>{{ mov.dateTime | date: 'short' }}</td>
+      <td>{{ mov.type }}</td>
+      <td>{{ mov.quantity }}</td>
+      <td>{{ mov.pricePerUnit | number: '1.2-4' }}</td>
+      <td>{{ (mov.totalAmount ?? mov.quantity * mov.pricePerUnit) | number: '1.2-2' }}</td>
+      <td>{{ mov.note || '-' }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<div *ngIf="!loadingMovements && !movements.length" class="state">
+  Nessun movimento per questo investimento.
+</div>

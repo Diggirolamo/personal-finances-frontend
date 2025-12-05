@@ -1,0 +1,32 @@
+<div class="header">
+  <div>
+    <h2>Nuova asset class</h2>
+    <p class="subtitle">Aggiungi una categoria da associare agli investimenti</p>
+  </div>
+</div>
+
+<form [formGroup]="form" (ngSubmit)="submit()" class="form">
+  <label>
+    Codice
+    <input type="text" formControlName="code" placeholder="Es: STOCK" />
+    <small *ngIf="form.get('code')?.touched && form.get('code')?.invalid">Obbligatorio</small>
+  </label>
+
+  <label>
+    Nome
+    <input type="text" formControlName="name" placeholder="Es: Azioni" />
+    <small *ngIf="form.get('name')?.touched && form.get('name')?.invalid">Obbligatorio</small>
+  </label>
+
+  <label>
+    Descrizione
+    <textarea rows="3" formControlName="description" placeholder="Descrizione (opzionale)"></textarea>
+  </label>
+
+  <div class="actions">
+    <button type="submit" [disabled]="loading">Salva</button>
+    <span *ngIf="loading">Salvataggio...</span>
+    <span class="error" *ngIf="error">{{ error }}</span>
+    <span class="success" *ngIf="success">Salvato!</span>
+  </div>
+</form>
