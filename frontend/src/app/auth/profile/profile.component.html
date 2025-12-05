@@ -1,0 +1,7 @@
+<div class="profile-card">
+  <h2>Il tuo profilo</h2>
+
+  <p><strong>Email:</strong> {{ auth.getToken() ? '•••' : 'Non loggato' }}</p>
+
+  <button routerLink="/home">Torna alla dashboard</button>
+</div>
